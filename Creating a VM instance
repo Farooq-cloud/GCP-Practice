@@ -1,0 +1,158 @@
+Creating a Compute Engine (VM instances):
+
+* Go to compute Engine.
+* Then click on Create instance.
+* In name give your preferred name for VM.(Name should only be in Small letter)
+* Give some labels
+* Select the region and Zone. Which i have selected Asia-south1(Mumbai) Zone asia-south1-a
+* Select General purpose CPU i.e E2 medium.
+* In Boot disk option -> select operating system. I have selected Debian GNU/Linux 10(buster) with 10 GB balanced persistent disk.
+* In Service accounts -> Select Compute Engine default service account.
+* In Access scopes -> Allow default access.
+* In Firewall -> Select Allow HTTP traffic.
+* At the bottom we will find create option. Then select it and Vm instance will be created.
+* Select SSH a new pop-up window will be appear. It will ask for authorization select it and terimal will open.
+* Here are some of the commands we would execute in the next few steps:
+* Installing HTTP Webserver on Google Compute Engine Virtual Machine.
+* You can refer back to this if you have problems. Good Luck.
+
+1.	sudo su
+2.	apt update
+3.	apt install apache2
+4.	ls /var/www/html
+5.	echo "Hello World!"
+6.	echo "Hello World!" > /var/www/html/index.html
+7.	echo $(hostname)
+8.	echo $(hostname -i)
+9.	echo "Hello World from $(hostname)"
+10.	echo "Hello World from $(hostname) $(hostname -i)"
+11.	echo "Hello world from $(hostname) $(hostname -i)" > /var/www/html/index.html
+12.	sudo service apache2 start
+
+Note: When you stop the instance old external Ip will be gone.And new ip will be assigned.
+
+Remember:  Sometimes Google Cloud reuses the same external Ip on restart! Do not worry about it!
+Creating static External ip address
+
+* Go to VPC network option. Then select Ip address.
+* There you will find your internal and external ip address.
+* For creating static external ip. Select Reserve external static IP address.
+* In name give my-first-external-static-ip-address.
+* In network service tier. Select Premium(default).
+* Ip Version I have selected IPV4
+* In type select Regional (my VM region)
+* In attached to Select my-first-vm.
+* Static IP can be switched to another VM instance in same project.
+* Static IP remains attached even if you stop the instance. You have to manually detach it. 
+* Remember : You are billed for an Static IP when you are NOT using it! Make sure that you explicitly release an Static IP when you are not using it.
+* We have deleted instance for checking.
+================================================
+
+Simplifying Web Server setup with Compute Engine Startup Script V2
+* Installing OS patches or software when an VM instance is launched is called Bootstrapping.
+* In VM you can configure startup script to bootstrap.
+
+(Procedure)
+* Now again creating the new instance with same about configurations.
+* In Advance Options > Select Management.
+*There we will have Automation. Below we have dailouge box to write the script.
+
+* Startup script
+# !/bin/bash 
+# apt update 
+# apt -y install apache2 
+# echo "Hello world from $(hostname) $(hostname -I)" > /var/www/html/index.html
+==============================================
+
+Simplifying VM creation with Instance Templates
+
+* Why do you need to specify all the VM instance details (Image, instance type etc) every time you launch an instance? 
+* How about creating a Instance template? 
+* Define machine type, image, labels, startup script and other properties. 
+* Used to create VM instances and managed instance groups.
+* Provides a convenient way to create similar instances CANNOT be updated.
+* To make a change, copy an existing template and modify it .
+* (Optional) Image family can be specified (example - debian-9): 
+* Latest non-deprecated version of the family is used.
+* DEMO - Launch VM instances using Instance templates.
+
+(Procedure)
+* Now copy the startup script from previous instance.
+* Now select the instance template.
+* Give name as my-instance-template-with-startup-script.
+* Leave the same configurations as created for our VM.
+* In Advance Options > Select Management.
+* There we will have Automation. Below we have dailouge box to write the script.
+* Startup script
+# !/bin/bash 
+# apt update 
+# apt -y install apache2 
+•	echo "Hello world from $(hostname) $(hostname -I)" > /var/www/html/index.html
+=========================================
+
+Reducing Launch Time with a Custom Image
+
+* Installing OS patches and software at launch of VM instances increases boot up time.
+* How about creating a custom image with OS patches and software pre-installed?
+ * Can be created from an instance, a persistent disk, a snapshot, another image, or a file in Cloud Storage.
+ * Can be shared across projects.
+ * (Recommendation) Deprecate old images (& specify replacement image).
+ * (Recommendation) Hardening an Image - Customize images to your corporate security standards.
+ * Prefer using Custom Image to Startup script.
+DEMO : Create a Custom Image and using it in an Instance Template.
+
+(Procedure)
+ 
+•	Creating a image.
+•	Go to VM instance option there you will find out option called storage select that.
+
+•	In Storage select Disk. Select the disk of VM instance from which you want to create Image.
+
+•	In Actions Tab. We will find three dots select there we will find option create image.
+
+* Then select create Image. 
+
+Note: We should create a image of a Instance should be in stopped state.
+Note: In Regions if you want image should in multi region select multi region option. If you want specifi region. Then select Regional
+
+•	Now image will be created. If you want to check the private image. Select Image option there you will find out.
+
+•	Then go to instance template. And select the instance template you want to copy and select copy option.
+
+
+•	You will get new create template tab with previous configuration.
+
+•	Give name as my-instance-template-with-custom-image. 
+
+•	In boot disk select the customized image which we have created.
+
+•	And select create. With these instance template we can launch as many instances we want.
+
+* Now select instance template. And create a Virtual Machine.
+===============================================
+
+Troubleshooting Launch of Apache on GCP Virtual Machine
+
+* In these steps lets try and understand debug problems. If you have problem installing apache web server (or) running the specific url.
+* Make sure that you are using External Ip of the running instance.
+* Go SSH in to It. And go to path /var/www/html/index.html and cat in to that path and check it.
+* Now check the running status of apache2.
+* Then also facing issue. Select the instance they you will find option called Firewall.
+* In Firewall HTTP should be on.
+
+
+===================================================
+
+There are four types of CPU
+* General purpose
+* Compute Optimized(New)
+* Memory Optimized
+* GPUs
+1.General Purpose (E2, N2, N2D, N1) : Best price-performance   ratio.
+* Web and application servers, Small-medium databases, Dev environments.
+
+2.Memory Optimized (M2, M1):  Ultra high memory workloads.
+ * Large in-memory databases and In-memory analytics.
+
+3.Compute Optimized (C2):  Compute intensive workloads 
+* Gaming applications

@@ -1,0 +1,65 @@
+Detail view about CPU and Memory
+
+There are four types of CPU
+* General purpose
+* Compute Optimized(New)
+* Memory Optimized
+* GPUs
+
+* General purpose: Machine types for common workloads, optimized for cost and flexibility.
+E2- Low cost day-to-day computing.2vCPU+4GB memory ($29.38 per-month)&($0.04 hourly)
+
+Shared-core
+* e2- medium 1-2 vCPU (1 shared core) 4GB Memory.
+* e2- small 0.5-2 vCPU (1 shared core) 2GB Memory.$14.69 per month & $0.02 hourly.
+
+* e2- Micro 0.25-2 vCPU (1 shared core) 1GB Memory. $7.34 per month & $0.01 hourly.
+
+Standard
+* e2-standard-2  2vCPU(1 core) 8GB Memory. $58.75 per month &  $0.08 hourly.
+
+* e2-standard-4 4vCPU(2 core) 16GB Memory.$117.51 per month & $0.16 hourly.
+
+* e2-standard-8 8vCPU(4 core) 32GB Memory.$235.01 per month & $0.32 hourly.
+
+* e2-standard-16 16vCPU(8 core) 64GB memory.$470.03 per month & $0.64 hourly.
+
+* e2-standard-32 32vCPU(16core) 128GB Memory.$940.06 per month & $1.29 hourly.
+
+High Memory
+* e2-highmem-2 2vCPU(1 core) 16GB Memory. $79.26 per month & $0.11 hourly.
+
+* e2-highmem-4 4vCPU(2 core) 32GB Memory.$158.51 per month & $0.22 hourly.
+
+* e2-highmem-8 8vCPU(4 core) 64GB Memory.$317.02 per month & $0.43 hourly.
+
+* e2-highmem-16 16vCPU(8 core) 128GB Memory.$634.05 per month & $0.87 hourly.
+
+High CPU
+* e2-highcpu-2 2vCPU(1 core) 2GB Memory.$43.38 per month & $0.06 hourly.
+
+* e2-highcpu-4 4vCPU (2 core) 4GB Memory. $86.75 per month & $0.12 hourly
+
+* e2-highcpu-8 8vCPU (4 core) 8GB Memory.$173.51 per month & $0.24 hourly.
+
+* e2-highcpu-16 16vCPU (8 core) 16GB Memory.$347.01 per month & $0.48 hourly.
+
+* e2-highcpu-32 32vCPU(16 core) 32GB Memory. $694.03 per month & $0.95 hourly.
+
+* Compute optimized(New): Machine types for performance-intensive workloads with highest performance per core.
+
+* H3- High performance computing workloads.88vCPU+352GB memory($3,738.00 per-month)&($5.12 hourly).
+
+* c2- Ultra-high performance compute-intensive workloads.4vCPU+16GB memory( $183.08 per-month)&($0.20 hourly).
+
+* C2D- Ultra-high performance compute-intensive workloads.2vCPU+8GB memory( $43.75 per-month)&($0.06 hourly).
+
+
+* Memory optimized: Machine types for workloads with higher memory-to-vCPU ratios, like in-memory databases.
+
+* M3- High memory, memory-intensive workloads.64vCPU+976GB memory($5,474.90 per-month)&($7.50 hourly).
+
+* M2- Ultra-high memory, in-memory databases.416vCPU+5888GB memory($42,097.64 per-month)&($57.67 hourly).
+
+* M1- High memory,memory-intensive workloads.96vCPU+1433.599609375GB memory($8,916.83 per-month)&($8.55 hourly).
+

@@ -1,0 +1,123 @@
+Cloud Load Balancing
+
+•	Distributes user traffic across instances of an application in single region or multiple regions.
+•	Fully distributed, software defined managed service.
+•	Important Features: 
+•	Health check - Route to healthy instances.
+•	Recover from failures.
+•	Auto Scaling Global load balancing with single anycast IP
+•	Also supports internal load balancing
+•	Enables:
+•	High Availability
+•	Auto Scaling
+•	Resiliency
+
+H T T P v s H T T P S v s T C P v s T L S v s UDP
+
+* Computers use protocols to communicate.
+•	Multiple layers and multiple protocols.
+•	Network Layer - Transfer bits and bytes.
+•	Transport Layer - Are the bits and bytes transferred properly? 
+•	Application Layer - Make REST API calls and Send Emails.
+•	(Remember) Each layer makes use of the layers beneath it.
+•	(Remember) Most applications talk at application layer. BUT some applications talk at transport layer directly(high performance).
+•	Network Layer: 
+•	IP (Internet Protocol): Transfer bytes. Unreliable. 
+•	Transport Layer: 
+•	TCP (Transmission Control): Reliability > Performance.
+•	TLS (Transport Layer Security): Secure TCP.
+•	UDP (User Datagram Protocol): Performance > Reliability.
+•	Application Layer: 
+•	HTTP(Hypertext Transfer Protocol): Stateless Request Response Cycle
+•	HTTPS: Secure HTTP 
+•	SMTP: Email Transfer Protocol and a lot of others...
+•	Most applications typically communicate at application layer.
+•	Web apps/REST API(HTTP/HTTPS), Email Servers(SMTP), File Transfers(FTP).
+•	All these applications use TCP/TLS at network layer(for reliability).
+•	HOWEVER applications needing high performance directly communicate at transport layer:
+•	Gaming applications and live video streaming use UDP (sacrifice reliability for performance).
+•	Objective: Understand Big Picture. Its OK if you do not understand all details.
+
+Creating a Load Balancer in GCP - Google Cloud Platform V2
+
+•	Go to load balancing option. It is a part of network services.
+•	Select create load balancer option.
+•	Start configuring the Application Load Balancer (HTTP/S).
+
+•	In Internet or internal only .Select option From Internet to my VMs or serverless services.
+
+•	In Global or regional .Select Global external Application Load Balancer and continue.
+
+•	A new window will appear and select Backend configuration.
+
+•	In Backend configuration choose Create Backend Service.
+
+•	In name give my-instance-group-backend-service.
+
+•	In Backend type. Select instance group.
+
+•	Take defaults for Protocol , Namedport and Timeout.
+
+•	In New backend option. Select our managed group my-managed-instance-group.
+
+•	In ports numbers select 80.
+
+•	In Blancing mode is Utilization.
+
+•	In Maximum backend utilization select 80%.
+
+•	In capacity select 100%.
+
+•	Select option Done.
+
+•	In Health-check. Select my-vm-health-check.
+
+•	In security select Default security policy.
+
+•	In Policy name select default-security-policy-my-instance-group-backend-service.
+
+•	Now backend service created my-instance-group-backend-service. Select ok.
+
+•	Now you should configure Routing rules
+
+•	In mode select Simple host and path rule.
+
+•	In Backend option select my-instance-group-backend-service and leave host and path empty.
+
+•	Now you has to configure Frontend.
+
+•	Everything is fine here select Done.
+
+•	Now select review and finalize.
+
+•	Give name to load balancer my-http-load-balancer.
+
+•	Then select create.
+
+Cloud Load Balancing - Terminology
+ 
+•	Backend - Group of endpoints that receive traffic from a Google Cloud load balancer (example: instance groups).
+•	Frontend - Specify an IP address, port and protocol. This IP address is the frontend IP for your clients requests.
+•	For SSL, a certificate must also be assigned.
+•	Host and path rules (For HTTP(S) Load Balancing) - Define rules redirecting the traffic to different backends:
+•	Based on path - in28minutes.com/a vs in28minutes.com/b.
+•	Based on Host - a.in28minutes.com vs b.in28minutes.com.
+•	Based on HTTP headers (Authorization header) and methods (POST, GET, etc) etc..
+
+Load Balancing - SSL/TLS Termination/Offffloading
+
+•	Client to Load Balancer: Over internet.
+•	HTTPS recommended.
+•	 Load Balancer to VM instance: Through Google internal network.
+•	HTTP is ok. HTTPS is preferred. 
+•	SSL/TLS Termination/Offloading.
+•	Client to Load Balancer: HTTPS/TLS.
+•	Load Balancer to VM instance: HTTP/TCP
+
+
+Cloud Load Balancing - Choosing Load Balancer
+
+https://cloud.google.com/load-balancing/images/choose-lb.svg
+
+
+

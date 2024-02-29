@@ -1,0 +1,175 @@
+Gcloud for Associate Google Cloud Engineer
+
+Getting started with Gcloud:
+•	Command line interface to interact with Google Cloud Resources.
+•	Most GCP services can be managed from CLI using Gcloud.
+•	Compute Engine Virtual Machines.
+•	Managed Instance Groups.
+•	Databases.and ... many more.
+•	You can create/delete/update/read existing resources and perform actions like deployments as well!
+•	(REMEMBER) SOME GCP services have specific CLI tools.
+•	Cloud Storage – gsutil.
+•	Cloud BigQuery - bq Cloud Bigtable.
+•	cbt Kubernetes - kubectl (in addition to Gcloud which is used to manage clusters)
+===========================================
+Installation
+
+*   Gcloud is part of Google Cloud SDK.
+•	Cloud SDK requires Python.
+•	Instructions to install Cloud SDK (and Gcloud) => https://cloud.google.com/sdk/docs/install
+•	You can also use Gcloud on Cloud Shell.
+
+•	Cloud Shell is accessible. You can find out after logging into Google Cloud Console at the top, next to the warning icon.
+
+Configuration
+•	gcloud init - initialize or reinitialize gcloud.
+•	Authorize gcloud to use your user account credentials.
+•	Setup configuration.
+•	Includes current project, default zone etc.
+•	gcloud config list - lists all properties of the active configuration.
+
+Note: Your project default Compute Engine region has been set to [asia-south1].
+You can change it by running [gcloud config set compute/region NAME].
+
+Commands executed in next steps
+
+1.	gcloud config list project
+2.	gcloud config configurations list
+3.	gcloud config configurations activate my-default-configuration
+4.	gcloud config list
+5.	gcloud config configurations describe my-second-configuration
+6.	gcloud compute instances list
+7.	gcloud compute instances create
+8.	gcloud compute instances create my-first-instance-from-gcloud
+9.	gcloud compute instances describe my-first-instance-from-gcloud
+10.	gcloud compute instances delete my-first-instance-from-gcloud
+11.	gcloud compute zones list
+12.	gcloud compute regions list
+13.	gcloud compute machine-types list
+14.	gcloud compute machine-types list --filter zone:asia-southeast2-b
+15.	gcloud compute machine-types list --filter "zone:(asia-southeast2-b asia-southeast2-c)"
+16.	gcloud compute zones list --filter=region:us-west2
+17.	gcloud compute zones list --sort-by=region
+18.	gcloud compute zones list --sort-by=~region
+19.	gcloud compute zones list --uri
+20.	gcloud compute regions describe us-west4
+21.	
+22.	gcloud compute instance-templates list
+23.	gcloud compute instance-templates create instance-template-from-command-line
+24.	gcloud compute instance-templates delete instance-template-from-command-line
+25.	gcloud compute instance-templates describe my-instance-template-with-custom-image
+gcloud config set
+•	Sets the specified property in your active configuration.
+•	 gcloud config set core/project VALUE.
+•	 gcloud config set compute/region VALUE.
+•	 gcloud config set compute/zone VALUE.
+•	 gcloud config set core/verbosity VALUE(debug).
+•	 Syntax - gcloud config set SECTION/PROPERTY VALUE.
+•	 core, compute – SECTIONS.
+•	 project, region, zone – PROPERTIES.
+•	 Specifying core is optional as it is the default SECTION! 
+•	gcloud config set project VALUE.
+•	gcloud config set verbosity VALUE(debug).
+•	Get more details with gcloud config set --help 
+•	Look for AVAILABLE PROPERTIES in the content.
+•	Opposite - gcloud config unset
+•	gcloud config set compute/region
+•	gcloud config set compute/zone
+
+
+Gcloud - Managing Multiple Configurations
+
+Scenario: You are working on multiple projects from the same machine. You would want to be able to execute commands using different configurations. 
+•	How do you simplify this? 
+•	gcloud config configurations create/delete/describe/activate/list.
+•	Create new configuration: gcloud config configurations create NAME(dev).
+•	Activate specific configuration: gcloud config configurations activate NAME(dev).
+•	List Configurations: gcloud config configurations list.
+
+gcloud command structure - Playing with Services
+
+•	gcloud GROUP SUBGROUP ACTION ...
+•	GROUP - config or compute or container or dataflow or functions or iam or .. 
+•	Which service group are you playing with? 
+•	SUBGROUP - instances or images or instance-templates or machine-types or regions or zones.
+•	 Which sub group of the service do you want to play with?
+•	 ACTION - create or list or start or stop or describe or ...
+•	 What do you want to do? 
+Examples: 
+•	gcloud compute instances list.
+•	 gcloud compute zones list.
+•	 gcloud compute regions list.
+•	 gcloud compute machine-types list.
+•	 gcloud compute machine-types list --filter="zone:us-central1-b".
+•	 gcloud compute machine-types list --filter="zone:( us-central1-b europe-west1-d )"
+
+gcloud compute instances create
+
+•	Creating Compute Instances.
+•	gcloud compute instances create [NAME]
+•	 Options: 
+•	--machine-type (default type is n1-standard-1 - gcloud compute machine-types list)
+•	 --custom-cpu --custom-memory --custom-vm-type(n1/n2) (Custom Machine) --custom-cpu 6 --custom-memory 3072MB --custom-vm-type n2
+•	 --image or --image-family or --source-snapshot or --source-instance-template or --source-machine-image (beta)
+•	 --service-account or --no-service-account
+•	 --zone=us-central1-b 
+•	--tags (List of tags - Allow network firewall rules and routes to be applied to VM instances)
+•	 --preemptible
+•	 --restart-on-failure(default) --no-restart-on-failure --maintenance-policy(MIGRATE(default)/TERMINATE)
+•	 --boot-disk-size, --boot-disk-type --boot-disk-auto-delete(default) --no-boot-disk-auto-delete
+•	 --deletion-protection --no-deletion-protection(default)
+•	 --metadata/metadata-from-file startup-script/startup-script-url --metadata-from-file startup-script=/local/path/to/script/startup OR --metadata startup-script="echo 'hello world'"
+•	 shutdown-script
+•	 --network --subnet --network-tier (PREMIUM (default), STANDARD) --accelerator="type=nvidia-tesla-v100,count=8" --metadata="install-nvidia-driver=True" (GPU)
+
+Compute Instances - Default Region and Zone
+•	Three Options: 
+•	Option 1 (Centralized Configuration): gcloud compute project-info add-metadata --metadata=[google-compute-default-region=REGION | google-compute-default-zone=ZONE].
+•	Option 2 (Local gcloud configuration): gcloud config set compute/region REGION.
+•	Option 3 (Command Specific): --zone or --region in the command
+ Priority: Option 3 (if exists) overrides Option 2 (if exists) overrides Option 1
+
+List and Describe commands
+
+* Typically list commands are used to list a set of resources.
+•	gcloud compute RESOURCES list.
+•	gcloud compute images/regions/zones/disk-types list.
+•	gcloud compute instances/disks/snapshots list.
+*   Most list commands support a few common options.
+*   --filter="zone:VALUE"
+*   --sort-by (NAME, ~NAME)
+*  --uri. (https://www.googleapis.com/compute/v1/projects/windows-sql-cloud/global/images/sql-2019-web-windows-2019-dc-v20210112)
+*  gcloud compute images list --sort-by NAME --filter "PROJECT:(windows-cloud ubuntu-os-cloud)"
+*  Typically describe commands are used to describe a specific resource
+*  gcloud compute images describe ubuntu-1604-xenial- v20210203 --project ubuntuos-cloud 
+*  gcloud compute regions describe us-central1
+
+Playing with Compute Instances – gcloud
+
+* Playing with compute instances.
+•	gcloud compute instances list/start/stop/delete/reset/describe/move.
+•	gcloud compute instances start example-instance.
+•	gcloud compute instances stop example-instance-1 example-instance-2.
+*   gcloud compute instances delete example-instance.
+*   --delete-disks=VALUE (all or data or boot)
+*  --keep-disks=VALUE (all or data or boot)
+*  gcloud compute instances move example-instance-1 --zone us-central1-b --destination-zone uscentral1-f.
+*  Move a VM from one zone to another.
+
+Playing with Instance Templates
+
+* gcloud compute instance-templates create/delete/describe/list.
+ gcloud compute instance-templates create INSTANCE-TEMPLATE
+•	--source-instance=SOURCE_INSTANCE --source-instance-zone (Which instance to create a template from?)
+•	Supports almost all options supported by gcloud compute instances create [NAME]
+•	 --image or --image-family or --source-snapshot or --source-instance-template 
+•	--service-account or --no-service-account 
+•	--tags 
+•	--preemptible 
+•	--restart-on-failure(default) --no-restart-on-failure --maintenance-policy(MIGRATE(default)/TERMINATE) 
+•	--boot-disk-size, --boot-disk-type --boot-disk-auto-delete(default) --no-boot-disk-auto-delete
+•	 --deletion-protection --no-deletion-protection(default)
+•	 --metadata/metadata-from-file startup-script/startup-script-url
+•	 --network --subnet --network-tier (PREMIUM (default), STANDARD)
+•	 --accelerator="type=nvidia-tesla-v100,count=8" --metadata="install-nvidia-driver=True" (GPU)
+•	 Using Instance Tempate to create an instance gcloud compute instances create my-test-vm --sourc e-instance-template=my-instance-templatewith-custom-image

@@ -1,0 +1,127 @@
+Getting Started with Instance Groups in Google Cloud
+
+Instance Groups
+•	How do you create a group of VM instances?
+•	 Instance Group - Group of VM instances managed as a single entity.
+•	 Manage group of similar VMs having similar lifecycle as ONE UNIT. 
+•	 Two Types of Instance Groups.
+•	Managed : Identical VMs created using a template.
+•	Features: Auto scaling, auto healing and managed releases.
+•	 Unmanaged : Different configuration for VMs in same group.
+•	 Does NOT offer auto scaling, auto healing & other services.
+•	 NOT Recommended unless you need different kinds of VMs.
+•	Location can be Zonal or Regional.
+•	Regional gives you higher availability (RECOMMENDED)
+
+
+Managed Instance Groups (MIG)
+
+* Managed Instance Group - Identical VMs created using an instance template.
+•	Important Features:
+•	Maintain certain number of instances.
+•	If an instance crashes, MIG launches another instance.
+•	Detect application failures using health checks (Self Healing).
+•	Increase and decrease instances based on load (Auto Scaling).
+•	Add Load Balancer to distribute load.
+•	Create instances in multiple zones (regional MIGs).
+•	Regional MIGs provide higher availability compared to zonal MIGs.
+•	Release new application versions without downtime.
+•	Rolling updates: Release new version step by step (gradually). Update a percentage of instances to the new version at a time.
+•	Canary Deployment: Test new version with a group of instances before releasing it across all instances.
+
+Creating Managed Instance Group (MIG)
+
+•	Instance template is mandatory.
+•	 Configure auto-scaling to automatically adjust number of instances based on load:
+•	 Minimum number of instances.
+•	 Maximum number of instances.
+•	 Autoscaling metrics: CPU Utilization target or Load Balancer Utilization target or Any other metric from Stack Driver.
+•	Cool-down period: How long to wait before looking at auto scaling metrics again? 
+•	Scale In Controls: Prevent a sudden drop in no of VM instances. 
+•	Example: Don't scale in by more than 10% or 3 instances in 5 minutes.
+•	Autohealing: Configure a Health check with Initial delay (How long should you wait for your app to initialize before running a health check?)
+•	Time for a Demo
+
+•	Create a instance using Instance templates which we have created before.
+
+•	Create a Instance group. Click on create instance groups.
+
+•	First give name as my-managed-instance-group
+
+
+•	Select the instance template name my-instance-template-with-custom-image.
+
+•	Select Single or Multiple Zones. I have selected single zone.
+
+•	In Auto-healing. Create health-check.
+
+•	Name my-vm-health-check.
+
+•	Select protocol to HTTP and port is 80.
+
+•	After creating Health-check.In initial delay is 30 sec.
+
+•	And select the create.
+
+Updating a Managed Instance Group (MIG)
+
+•	Rolling update - Gradual update of instances in an instance group to the new instance template.
+•	 Specify new template: 
+•	(OPTIONAL) Specify a template for canary testing
+•	 Specify how you want the update to be done:
+•	 When should the update happen?
+•	 Start the update immediately (Proactive) or when instance group is resized later(Opportunistic).
+•	 How should the update happen?
+•	 Maximum surge: How many instances are added at any point in time? 
+•	Maximum unavailable: How many instances can be offline during the update? 
+•	Rolling Restart/replace: Gradual restart or replace of all instances in the group
+•	 No change in template BUT replace/restart existing VMs.
+•	 Configure Maximum surge, Maximum unavailable and What you want to do? (Restart/Replace)
+
+* If you want to go for Rolling update. Go for Update VMS in instance groups.
+
+• There select new Template. 
+Note: 2 is the maximum number of items allowed.
+
+•	In update configuration. We have two options  Selective & Automatic. If you select automatic you need to select some more configurations.
+•	In case of Restart or replace. Select option Restart or replace.
+
+Commands executed in next steps
+
+1.	gcloud compute instances create my-test-vm --source-instance-template=my-instance-template-with-custom-image
+2.	gcloud compute instance-groups managed list
+3.	gcloud compute instance-groups managed delete my-managed-instance-group
+4.	gcloud compute instance-groups managed create my-mig --zone us-central1-a --template my-instance-template-with-custom-image --size 1
+5.	gcloud compute instance-groups managed set-autoscaling my-mig --max-num-replicas=2 --zone us-central1-a
+6.	gcloud compute instance-groups managed stop-autoscaling my-mig --zone us-central1-a
+7.	gcloud compute instance-groups managed resize my-mig --size=1 --zone=us-central1-a
+8.	gcloud compute instance-groups managed recreate-instances my-mig --instances=my-mig-85fb --zone us-central1-a
+9.	gcloud compute instance-groups managed delete my-managed-instance-group --region=us-central1
+
+Commands:     
+# gcloud config set project <project id>
+# gcloud compute instance-groups managed list
+
+To create instance group: 
+# gcloud compute instance-groups managed create my-mig  --zone asia-south1-a --template my-instance-template-with-custom-image  --size 1
+
+# gcloud compute instance-groups managed set-autoscaling my-mig --max-num-replicas=2 –zone asia-south1-a
+
+# gcloud compute instance-groups managed stop-autoscaling my-mig –zone asia-south1-a
+
+# gcloud compute instance-groups managed resize my-mig –size=1 –zone asia-south1-a
+
+# gcloud compute instance-groups managed recreate-instances my-mig –instances=my-mig-k1sd –zone asia-south1-a
+
+# --health-check=HEALTH_CHECK: How do you delete if and instance is healthy?
+
+# --initial-delay: How much time should give to an instance to start?
+
+•	Other similar commands – gcloud compute instances-groups managed delete/describe/list
+•	Setup Autoscalling: set-autoscalling/stop-autoscalling
+
+# gcloud compute instance-groups managed set-autoscaling my-mig –max-num-replicas=10
+
+•	--Cool-down-period (default -60s): How much time should auto scaler wait after initiating an autoscalling action?
+
+•	--scale-based-on-cpu –target-cpu-utilization –scale-based-on-load-balancing –target-load-balancing-utilization.
